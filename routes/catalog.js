@@ -3,7 +3,7 @@ var router = express.Router();
 
 // GET home page.
 router.get('/', function (req, res) {
-  res.redirect('/cookbook');
+    console.log('hi');
 });
 
 module.exports = router;

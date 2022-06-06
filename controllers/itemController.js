@@ -9,23 +9,23 @@ exports.index = function (req, res) {
 
     async.parallel({
         items: function (callback) {
-            Item.find({}, 'title description price')
+            Item.find({}, 'title description price quantity')
                 .sort()
-                .populate('categories')
+                .populate('category')
                 .exec(callback);
         },
     }, function (err, results) {
         if (err) { return next(err) };
-        // if (results.recipes == null) {
-        //     // No results.
-        //     var err = new Error('Recipes not found');
-        //     err.status = 404;
-        //     return next(err);
-        // }
+        if (results.items == null) {
+            // No results.
+            var err = new Error('Items not found');
+            err.status = 404;
+            return next(err);
+        }
         // Successful so render
         res.render('index', {
             title: 'All Items',
-            recipes: results.items
+            items: results.items
         });
     });
 };

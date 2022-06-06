@@ -1,11 +1,12 @@
 const { body, validationResult } = require('express-validator');
 
 var Item = require('../models/item');
+var Category = require('../models/category');
 
 var async = require('async');
 const { off } = require('../models/item');
 
-exports.index = function (req, res) {
+exports.index = function (req, res, next) {
 
     async.parallel({
         items: function (callback) {

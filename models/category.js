@@ -15,4 +15,4 @@ CategorySchema.virtual('url').get(function () {
 });
 
 // Export model
-module.exports = mongoose.model('Genre', GenreSchema);
+module.exports = mongoose.model('Category', CategorySchema);

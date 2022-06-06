@@ -6,9 +6,9 @@ var ItemSchema = new Schema(
     {
         title: { type: String, required: true },
         description: { type: String, required: true },
-        price: { type: String, required: true },
-        quantity: [{ type: String, required: true }],
-        categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }]
+        price: { type: Number, required: true },
+        quantity: { type: Number, required: true },
+        category: { type: Schema.Types.ObjectId, ref: 'Category' }
     }
 );
 

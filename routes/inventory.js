@@ -7,4 +7,7 @@ var item_controller = require('../controllers/itemController');
 // GET home page.
 router.get('/', item_controller.index);
 
+// Get request for one Item.
+router.get('/item/:id', item_controller.item_detail)
+
 module.exports = router;

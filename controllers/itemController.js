@@ -15,6 +15,10 @@ exports.index = function (req, res, next) {
                 .populate('category')
                 .exec(callback);
         },
+        categories: function (callback) {
+            Category.find({}, 'type')
+                .exec(callback)
+        }
     }, function (err, results) {
         if (err) { return next(err) };
         if (results.items == null) {
@@ -26,7 +30,29 @@ exports.index = function (req, res, next) {
         // Successful so render
         res.render('index', {
             title: 'All Items',
-            items: results.items
+            items: results.items,
+            categories: results.categories
         });
+    });
+};
+
+exports.item_detail = function (req, res, next) {
+
+    async.parallel({
+        item: function (callback) {
+            Item.findById(req.params.id)
+                .populate('category')
+                .exec(callback)
+        }
+    }, function (err, results) {
+        if (err) { return next(err) };
+        if (results.item == null) {
+            // No results
+            var err = new Error('Item not found');
+            err.status = 404;
+            return next(err);
+        }
+        // Succesful, so render
+        res.render('item_detail', { title: results.item.title, item: results.item });
     });
 };

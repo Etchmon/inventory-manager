@@ -4,10 +4,16 @@ block content
   h1= title
   p Welcome to #{title}
 
+  h2 Categories
+  each category in categories 
+    a(href=category.url) #{category.type}  
+
+  h2 All Items in Inventory
   ul
     each item in items 
       li 
         a(href=item.url) #{item.title}
-        | #{item.quantity}
-    else 
+        p price: #{item.price}  
+        p quantity: #{item.quantity}
+    else
       li There are no Items.

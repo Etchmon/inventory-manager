@@ -1,15 +1,15 @@
 const { body, validationResult } = require('express-validator');
 
-var Recipe = require('../models/recipe');
+var Item = require('../models/item');
 
 var async = require('async');
-const { off } = require('../models/recipe');
+const { off } = require('../models/item');
 
 exports.index = function (req, res) {
 
     async.parallel({
-        recipes: function (callback) {
-            Recipe.find({}, 'title description ingredients')
+        items: function (callback) {
+            Item.find({}, 'title description price')
                 .sort()
                 .populate('categories')
                 .exec(callback);
@@ -24,8 +24,8 @@ exports.index = function (req, res) {
         // }
         // Successful so render
         res.render('index', {
-            title: 'All Recipes',
-            recipes: results.recipes
+            title: 'All Items',
+            recipes: results.items
         });
     });
 };

@@ -6,6 +6,7 @@ var Category = require('../models/category');
 var async = require('async');
 const { off } = require('../models/item');
 
+// Display index page on GET
 exports.index = function (req, res, next) {
 
     async.parallel({
@@ -36,6 +37,7 @@ exports.index = function (req, res, next) {
     });
 };
 
+// Display Item detail on GET.
 exports.item_detail = function (req, res, next) {
 
     async.parallel({
@@ -54,5 +56,19 @@ exports.item_detail = function (req, res, next) {
         }
         // Succesful, so render
         res.render('item_detail', { title: results.item.title, item: results.item });
+    });
+};
+
+// Display book create form on GET.
+exports.item_create_get = function (req, res, next) {
+
+    // Get all categories for item create.
+    async.parallel({
+        categories: function (callback) {
+            Category.find(callback)
+        }
+    }, function (err, results) {
+        if (err) { return next(err) };
+        res.render('item_form', { title: 'Create Item', categories: results.categories });
     });
 };

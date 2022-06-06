@@ -1,0 +1,14 @@
+extends layout
+
+block content 
+  h1= title 
+  
+  ul 
+    each item in items 
+        li 
+            a(href=item.url) #{item.title}
+            p price: #{item.price}
+            p quantity: #{item.quantity}
+    else 
+        li There are no items in this Category.
+        

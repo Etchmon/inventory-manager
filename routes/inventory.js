@@ -23,8 +23,8 @@ router.post('/item/:id/delete', item_controller.item_delete_post);
 // Get request to update Item
 router.get('/item/:id/update', item_controller.item_update_get);
 
-// // POST request to update Item.
-// router.post('/item/:id/update'.item_controller.item_update_post);
+// POST request to update Item.
+router.post('/item/:id/update', item_controller.item_update_post);
 
 // GET request for one Item.
 router.get('/item/:id', item_controller.item_detail);

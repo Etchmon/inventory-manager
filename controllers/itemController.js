@@ -187,3 +187,55 @@ exports.item_update_get = function (req, res) {
         res.render('item_form', { title: 'Update Item', item: results.item, categories: results.categories });
     });
 };
+
+// Handle book update on POST
+exports.item_update_post = [
+
+    // Validate and sanitize fields.
+    body('title', 'Title must not be empty.').trim().isLength({ min: 1 }).escape(),
+    body('description', 'Descritpion must not be empty').trim().isLength({ min: 1 }).escape(),
+    body('price', 'Price must not be empty').trim().isLength({ min: 1 }).escape(),
+    body('quantity', 'Quantity must not be empty').trim().isLength({ min: 1 }).escape(),
+
+    // Process request after validation and sanitization.
+    (req, res, next) => {
+
+        // Extract the validation errors from a request.
+        const errors = validationResult(req);
+
+        // Createa an Item object with escaped/trimmed data and old id.
+        var item = new Item(
+            {
+                title: req.body.title,
+                description: req.body.description,
+                price: req.body.price,
+                quantity: req.body.quantity,
+                category: req.body.category,
+                _id: req.params.id // required or a new ID will be assigned
+            }
+        );
+
+        if (!errors.isEmpty()) {
+            // There are errors. Render form again with sanitize values/error messages.
+
+            // Get all categories for item create
+            async.parallel({
+                categories: function (callback) {
+                    Category.find(callback)
+                }
+            }, function (err, results) {
+                if (err) { return next(err) };
+                res.render('item_form', { title: 'Create Item', categories: results.categories, errors: errors.array() });
+            });
+            return;
+        }
+        else {
+            // Data from form is valid. Update the record.
+            Item.findByIdAndUpdate(req.params.id, item, {}, function (err, theitem) {
+                if (err) { return next(err) };
+                //Successful - redirect to item detail page.
+                res.redirect(theitem.url);
+            });
+        }
+    }
+];

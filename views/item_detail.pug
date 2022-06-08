@@ -9,3 +9,8 @@ block content
   p price: #{item.price}
   p quantity: #{item.quantity}
   p category: #{item.category.type}
+
+  p
+    a(href=item.url+'/delete') Delete Item
+  p
+    a(href=item.url+'/update') Update Item

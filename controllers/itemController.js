@@ -123,3 +123,41 @@ exports.item_create_post = [
         }
     }
 ];
+
+// Display item delete form on GET.
+exports.item_delete_get = function (req, res) {
+
+    async.parallel({
+        item: function (callback) {
+            Item.findById(req.params.id).exec(callback)
+        }
+    }, function (err, results) {
+        if (err) { return next(err) };
+        if (results.item == null) {
+            // No results
+            res.redirect('/inventory')
+        };
+        // Successful, so render.
+        res.render('item_delete', {
+            title: 'Delete Item',
+            item: results.item
+        });
+    });
+};
+
+// Handle item delete on POST.
+exports.item_delete_post = function (req, res) {
+    async.parallel({
+        item: function (callback) {
+            Item.findById(req.body.itemid).exec(callback)
+        }
+    }, function (err, results) {
+        if (err) { return next(err) };
+
+        Item.findByIdAndRemove(req.body.itemid, function deleteItem(err) {
+            // Delete item and redirect to list of items.
+            if (err) { return next(err) }
+            res.redirect('/inventory')
+        })
+    });
+};

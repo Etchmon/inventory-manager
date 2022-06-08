@@ -9,13 +9,13 @@ block content
         input#title.form-control(type='text', placeholder='Name of Item' name='title' required='true' value=(undefined===item ? '' : item.title))
     .form-group
         label(for='description') Description: 
-        textarea#description.form-control(type='textarea' placeholder='Description' name='description' required='true')
+        textarea#description.form-control(type='textarea' placeholder='Description' name='description' required='true' value=(undefined===item ? '' : item.description)) #{(undefined===item ? '' : item.description)}
     .form-group 
         label(for='price') Price: 
-        input#price.form-control(type='number' name='price' placeholder='Price' required='true')
+        input#price.form-control(type='number' name='price' placeholder='Price' required='true' value=(undefined===item ? '' : item.price))
     .form-group 
         label(for='quantity') Quantity: 
-        input#quantity.form-control(type='number' name='quantity' placeholder='quantity' required='true')
+        input#quantity.form-control(type='number' name='quantity' placeholder='quantity' required='true' value=(undefined===item ? '' : item.quantity))
     .form-group 
         label(for='category') Category: 
         select#category.form-control(type='select' placeholder='Select Category' name='category' require='true')

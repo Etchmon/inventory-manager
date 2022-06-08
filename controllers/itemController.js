@@ -59,7 +59,7 @@ exports.item_detail = function (req, res, next) {
     });
 };
 
-// Display book create form on GET.
+// Display item create form on GET.
 exports.item_create_get = function (req, res, next) {
 
     // Get all categories for item create.
@@ -159,5 +159,31 @@ exports.item_delete_post = function (req, res) {
             if (err) { return next(err) }
             res.redirect('/inventory')
         })
+    });
+};
+
+// Display item update form on GET.
+exports.item_update_get = function (req, res) {
+
+    // Get item for form.
+    async.parallel({
+        item: function (callback) {
+            Item.findById(req.params.id).populate('category').exec(callback);
+        },
+        categories: function (callback) {
+            Category.find(callback);
+        }
+    }, function (err, results) {
+        if (err) { return next(err) };
+        if (results.item == null) {
+            //No results.
+            var err = new Error('Item not found');
+            err.status = 404;
+            return next(err);
+        }
+        // Success.
+        // Mark category as selected
+
+        res.render('item_form', { title: 'Update Item', item: results.item, categories: results.categories });
     });
 };

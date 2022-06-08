@@ -72,3 +72,54 @@ exports.item_create_get = function (req, res, next) {
         res.render('item_form', { title: 'Create Item', categories: results.categories });
     });
 };
+
+// Handle item create on POST.
+exports.item_create_post = [
+
+    // Validate and sanitize the fields.
+    body('title', 'Title must not be empty.').trim().isLength({ min: 1 }).escape(),
+    body('description', 'Descritpion must not be empty').trim().isLength({ min: 1 }).escape(),
+    body('price', 'Price must not be empty').trim().isLength({ min: 1 }).escape(),
+    body('quantity', 'Quantity must not be empty').trim().isLength({ min: 1 }).escape(),
+
+    // Process request after validation and sanitization
+    (req, res, next) => {
+
+        // Extract validations errors from request.
+        const errors = validationResult(req);
+
+        // Create a Item object with escaped and trimmed data.
+        var item = new Item(
+            {
+                title: req.body.title,
+                description: req.body.description,
+                price: req.body.price,
+                quantity: req.body.quantity,
+                category: req.body.category
+            }
+        );
+
+        if (!errors.isEmpty()) {
+            // There are errors. Render form again with sanitize values/error messages.
+
+            // Get all categories for item create
+            async.parallel({
+                categories: function (callback) {
+                    Category.find(callback)
+                }
+            }, function (err, results) {
+                if (err) { return next(err) };
+                res.render('item_form', { title: 'Create Item', categories: results.categories, errors: errors.array() });
+            });
+            return;
+        }
+        else {
+            // Data from form is valid. Save book.
+            item.save(function (err) {
+                if (err) { return next(err); }
+                // successful - redirect to new item record
+                res.redirect(item.url);
+            });
+        }
+    }
+];

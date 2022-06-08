@@ -29,11 +29,11 @@ router.post('/item/:id/update', item_controller.item_update_post);
 // GET request for one Item.
 router.get('/item/:id', item_controller.item_detail);
 
-// // GET request for creating Category.
-// router.get('/category/create', category_controller.category_create_get);
+// GET request for creating Category.
+router.get('/category/create', category_controller.category_create_get);
 
-// // POST request for creating Category.
-// router.post('/category/create', category_controller.category_create_post);
+// POST request for creating Category.
+router.post('/category/create', category_controller.category_create_post);
 
 // // GET request to delete Category.
 // router.get('/category/:id/delete', category_controller.category_delete_get);
